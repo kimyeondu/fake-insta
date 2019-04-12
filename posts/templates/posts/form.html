@@ -13,6 +13,10 @@
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form post_form %}
+    
+    {% if image_form %}
+        {% bootstrap_form image_form shoe_label=False %}
+    {% endif %}
     <!--1-->
    <!--{#<button type="submit" class="btn btn-primary">Submit</button>#}-->
    <!--{#<button type="reset" class="btn btn-outline-primary">Cancel</button>#}-->
