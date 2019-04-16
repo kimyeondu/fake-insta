@@ -9,12 +9,24 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="shortcut icon" type="image/png" href="{% static 'posts/favicon.ico' %}">
 
-출처: https://webdir.tistory.com/337 [WEBDIR]
+
     <title>Fake-Insta</title>
 </head>
 <body>
     {% include 'posts/_nav.html' %}
+    
     <div class="container">
+        {% if user.is_authenticated %}
+            <p>{{ user.username }} 님 로그인 중</p>
+            <a href="{% url 'accounts:logout' %}">로그아웃</a>
+        {% else %}
+            <p>
+                <a href="{% url 'accounts:login' %}">로그인</a>
+                <a href="{% url 'accounts:signup' %}">회원가입</a>
+            </p>
+        {% endif %}
+        <hr>
+        
         {% block content %}
         {% endblock %}
     </div>

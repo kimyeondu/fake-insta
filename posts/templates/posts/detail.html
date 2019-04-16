@@ -1,8 +1,0 @@
-<!--- posts/detail.html -->
-{% extends 'base.html' %}
-{% block content %}
-<h1>DETAIL</h1>
-<a href="{% url 'posts:update' post.pk %}">{{ post }}</a>
-<a href="{% url 'posts:update' post.pk %}">[수정]</a>
-<a href="{% url 'posts:delete' post.pk %}">[삭제]</a>
-{% endblock  %}

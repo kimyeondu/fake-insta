@@ -1,30 +1,24 @@
-<!-- posts/form.html -->
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
-
 {% if request.resolver_match.url_name == 'create' %}
-    <h1>NEW post</h1>
-{% else %}
-    <h1>EDIT post</h1>
+<h1>create</h1>
+{% elif request.resolver_match.url_name == 'update' %}
+<h1>update</h1>
 {% endif %}
-
-<!-- 1 -->
-<form method="POST" enctype="multipart/form-data">
+<form  method='POST' enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form post_form %}
-    
     {% if image_form %}
-        {% bootstrap_form image_form shoe_label=False %}
+        {% bootstrap_form image_form show_label=Flase %}
     {% endif %}
-    <!--1-->
-   <!--{#<button type="submit" class="btn btn-primary">Submit</button>#}-->
-   <!--{#<button type="reset" class="btn btn-outline-primary">Cancel</button>#}-->
-   <!--{#<a href="{% url 'posts:list' %}" class='btn btn-info'>Back</a>#}-->
-   
-    <!--2-->
-    {% buttons submit="Submit" reset="Cancel" %}{% endbuttons %}
-    <a href="{% url 'posts:list' %}" class='btn btn-info'>Back</a>
-    
+    {% buttons %}
+    <div class="d-flex justify-content-end">
+    <button type="reset" class="btn btn-outline-dark">Cancle</button>
+    <button type="submit" class="mx-1 btn btn-dark">Submit</button>
+    </div>
+    {% endbuttons %}
+
 </form>
+    
 {% endblock %}

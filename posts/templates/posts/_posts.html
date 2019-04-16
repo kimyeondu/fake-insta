@@ -1,0 +1,79 @@
+{% load bootstrap4 %}
+<div class="col-12 col-lg-4 my-3">
+    <div class="card ">
+        <div class="card-header bg-white">
+            <h5 class='card-text text-secondary'>{{ post.user }}</h5>
+        </div>
+        {% if post.image_set %}
+        <div id="post{{ post.pk }}" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+            {% for image in post.image_set.all %}
+                <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
+                    <img src="{{ image.file.url }}" class="d-block w-100" alt="{{ image.file }}">
+                </div>
+            {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#post{{ post.pk }}" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#post{{ post.pk }}" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        {% else %}
+        <img src="#" alt="no_image"></img>
+        {% endif %}
+        <div class="card-body">
+            <a href="{% url 'posts:like' post.pk %}" class="card-link">
+                {% if user in post.like_users.all %}
+                <i class="fas fa-heart fa-lg" style="color:crimson"></i>
+                {% else %}
+                <i class="fas fa-heart fa-lg" style="color:black"></i>
+                {% endif %}
+            </a>
+            <p class="card-text">{{ post.like_users.all.count }} 명이 좋아합니다</p>
+            
+            
+            
+            <p class="card-text">{{ post }}</p>
+            <hr>
+            <!--COMMENT READ-->
+            {% for comment in post.comment_set.all %}
+                <div class="d-flex justify-content-between">
+                <p><b>{{ comment.user }}</b> | {{ comment }}</p>
+                <!--COMMENT DELETE-->
+                {% if user == comment.user %}
+                <form action="{% url 'posts:delete_comment' post.pk comment.pk %}" method='POST'>
+                    {% csrf_token %}
+                    <button type='submit' class='btn text-danger'><i class="far fa-trash-alt"></i></button>
+                </form>
+                </div>
+                {% endif %}
+            {% endfor %} 
+            
+            <!--COMMENT DELETE-->
+            {% if user == post.user %}
+            <a href="{% url 'posts:update' post.pk %}" class='btn btn-outline-dark'>EDIT</a>
+            <form action="{% url 'posts:delete' post.pk %}" method='POST'  style='display: inline;'>
+                {% csrf_token %}
+            <input type="submit" class='btn btn-danger' value="DELETE"/>
+            </form>
+            {% endif %}
+
+        </div>
+    </div>
+    <div class="card-footer">
+             <!--COMMENT CREATE-->
+            {% if request.user.is_authenticated %}    
+            <form action="{% url 'posts:create_comment' post.pk %}" method='POST'>
+                {% csrf_token %}
+                <input type="text" name="content" style='width: 83%;' placeholder='Enter Comment Here'/>
+                <button type='submit' class='btn text-primary'><i class="fas fa-pencil-alt"></i></button>
+            </form>
+            {% else %}
+            <a href="{% url 'accounts:login' %}">You Wanna Comment? Plz SignIn</a>
+            {% endif %}
+        </div>
+</div>
