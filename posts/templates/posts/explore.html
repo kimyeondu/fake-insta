@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h1>Explore</h1>
+<div class="d-flex flex-wrap justyfy-content-center">
+{% for post in posts %}
+    {% include 'posts/_posts.html' %}
+{% endfor %}
+</div>
+{% endblock %}

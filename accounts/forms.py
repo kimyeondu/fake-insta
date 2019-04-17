@@ -24,4 +24,9 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ['nickname', 'introduction',]
         
+class CustomUserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):  # Meta class도 상속 받을 수 있다
+        model = get_user_model()
+        fields = UserCreationForm.Meta.fields
+        
         

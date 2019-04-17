@@ -1,11 +1,24 @@
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import PostForm, ImageForm, CommentForm
+from django.db.models import Q
+from itertools import chain
 from .models import Post, Image, Comment
 # Create your views here.
 
 def list(request):
-    posts = get_list_or_404(Post.objects.order_by('-pk'))
+    #1
+    followings = user__in=request.user.followings.all()
+    posts = Post.objects.filter(
+        Q(user__in=followings) | Q(user=request.user.id)).order_by('-pk')
+    
+    #2
+    # followings = request.user.followings.all()
+    # chain_followings = chain(followings, [request.user])    # iterable끼리만 합칠 수 있음
+    # posts = Post.objects.filter(user_in=followings).order_by('-pk')
+    
+    # posts = Post.objects.filter(user__in=request.user.followings.all()).order_by('-pk')
+    # posts = get_list_or_404(Post.objects.order_by('-pk'))
     comment_form = CommentForm()
     context = {
         'posts':posts,
@@ -107,3 +120,14 @@ def like(request, post_pk):
     # else:
     #     post.like_users.add(user)
     # return redirect('posts:list')
+
+@login_required
+def explore(request):
+    posts = Post.objects.order_by('-pk')
+    # posts = Post.objects.exclude(user=request.user).order_by('-pk')
+    comment_form = CommentForm()
+    context = {
+        'posts':posts,
+        'comment_form':comment_form,
+    }
+    return render(request, 'posts/explore.html', context)

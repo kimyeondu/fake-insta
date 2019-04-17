@@ -31,10 +31,11 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'posts.apps.PostsConfig',
+    'accounts.apps.AccountsConfig',
     'imagekit',
     'bootstrap4',
-    'accounts.apps.AccountsConfig',
-    'posts.apps.PostsConfig',
+    'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -124,4 +125,5 @@ USE_TZ = False
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+AUTH_USER_MODEL = 'accounts.User'   # 기본 User 모델을 오버라이드
 
