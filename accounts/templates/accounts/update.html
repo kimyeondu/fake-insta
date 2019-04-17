@@ -10,8 +10,8 @@
 <hr>
 <form action="{% url 'accounts:delete' %}" method="POST" onsubmit="return confirm('R U SURE ?')";>
     {% csrf_token %}
-    <a href="{% url 'people' user.username %}" class="btn btn-primary">back</a>
     <button type="submit" class="btn btn-danger">탈퇴</button>
+    <a href="{% url 'people' user.username %}" class="btn btn-primary">back</a>
     
 </form>
 {% endblock %}

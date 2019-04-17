@@ -5,15 +5,17 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
-from .forms import SignupForm, UserCustomChangeForm
 from django.contrib.auth import get_user_model, update_session_auth_hash
-
+from .forms import SignupForm, UserCustomChangeForm, ProfileForm
+from .models import Profile
 
 def signup(request):
     if request.method == "POST":
         form = SignupForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            Profile.objects.create(user=user)
+            
             return redirect('posts:list')
         
     else:
@@ -83,3 +85,14 @@ def password(request):
     context = {'form':form}
     return render(request, 'accounts/change_password.html', context)
     
+@login_required
+def profile_update(request):
+    if request.method=="POST":
+        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        if profile_form.is_valid():
+            profile_form.save()
+            return redirect('people', request.user.username)
+    else:
+        profile_form = ProfileForm(instance=request.user.profile)
+    context = {'profile_form':profile_form}
+    return render(request, 'accounts/profile.html', context)

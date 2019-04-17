@@ -6,6 +6,7 @@ from . import views
 app_name = 'accounts'
 
 urlpatterns = [
+    path('profile/update/', views.profile_update, name='profile_update'),    
     path('password/', views.password, name='password'),    
     path('update/', views.update, name='update'),
     path('delete/', views.delete, name='delete'),

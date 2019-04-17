@@ -49,8 +49,9 @@
                     {% csrf_token %}
                     <button type='submit' class='btn text-danger'><i class="far fa-trash-alt"></i></button>
                 </form>
-                </div>
+                
                 {% endif %}
+                </div>
             {% endfor %} 
             
             <!--COMMENT DELETE-->
@@ -63,7 +64,7 @@
             {% endif %}
 
         </div>
-    </div>
+
     <div class="card-footer">
              <!--COMMENT CREATE-->
             {% if request.user.is_authenticated %}    
@@ -76,4 +77,5 @@
             <a href="{% url 'accounts:login' %}">You Wanna Comment? Plz SignIn</a>
             {% endif %}
         </div>
+    </div>
 </div>
