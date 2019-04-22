@@ -1,3 +1,4 @@
+{% load posts_templatetag %}
 {% load bootstrap4 %}
 <div class="col-12 col-lg-4 my-3">
     <div class="card ">
@@ -37,7 +38,7 @@
             
             
             
-            <p class="card-text">{{ post }}</p>
+            <p class="card-text">{{ post|hashtag_link|safe }}</p>
             <hr>
             <!--COMMENT READ-->
             {% for comment in post.comment_set.all %}
